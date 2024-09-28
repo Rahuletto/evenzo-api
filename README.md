@@ -12,6 +12,9 @@ An event management API made with [Hono](https://hono.dev/) 🔥 with [Cloudflar
 
 ## Installation and Setup
 
+> [!TIP]
+> If you are not interested in running with the source, you can test it out with the [deployed url](https://evenzo.rameshrahul1974.workers.dev) > `https://evenzo.rameshrahul1974.workers.dev`
+
 ### Prerequisites
 
 - [Cloudflare Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/)
@@ -93,10 +96,10 @@ Create a new event. Requires a JSON body:
 
 ```json
 {
-"title": "Event Title",
-"description": "Event Description",
-"location": "Event Location",
-"time": "2024-10-01T10:00:00Z"
+  "title": "Event Title",
+  "description": "Event Description",
+  "location": "Event Location",
+  "time": "2024-10-01T10:00:00Z"
 }
 ```
 
@@ -109,8 +112,7 @@ Update an existing event by its ID. Requires a JSON body with updated details.
 `DELETE /events/{id}`
 Delete an event by its ID.
 
-
-## Documentation
+## [Documentation](https://evenzo.rameshrahul1974.workers.dev/docs)
 
 The API is documented using OpenAPI. Access the Swagger UI for exploration:
 
@@ -118,4 +120,5 @@ The API is documented using OpenAPI. Access the Swagger UI for exploration:
 - OpenAPI Spec: `/swagger.json`
 
 ## License
+
 This project is licensed under the MPL 2.0 License.
