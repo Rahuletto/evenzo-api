@@ -1,0 +1,17 @@
+{
+  "name": "events",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts"
+  },
+  "dependencies": {
+    "@hono/swagger-ui": "^0.4.1",
+    "@hono/zod-openapi": "^0.16.2",
+    "@hono/zod-validator": "^0.3.0",
+    "hono": "^4.6.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "wrangler": "^3.57.2"
+  }
+}
