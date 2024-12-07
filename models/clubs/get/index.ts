@@ -1,15 +1,8 @@
 import { initializeClubsTable } from "../initialize";
-
 import { Club } from "../../../schema/Clubs";
 
-export async function getClubById(
-  db: D1Database,
-  id: number
-): Promise<Club | null> {
+export async function getAllClubs(db: D1Database): Promise<Club[]> {
   await initializeClubsTable(db);
-  const event = await db
-    .prepare("SELECT * FROM clubs WHERE id = ?")
-    .bind(id)
-    .first();
-  return event as Club | null;
+  const { results }: any = await db.prepare("SELECT * FROM clubs").all();
+  return results as Club[];
 }

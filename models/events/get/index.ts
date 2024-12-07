@@ -1,14 +1,8 @@
 import { initializeEventsTable } from "../initialize";
 import { Event } from "../../../schema/Events";
 
-export async function getEventById(
-  db: D1Database,
-  id: number
-): Promise<Event | null> {
+export async function getAllEvents(db: D1Database): Promise<Event[]> {
   await initializeEventsTable(db);
-  const event = await db
-    .prepare("SELECT * FROM events WHERE id = ?")
-    .bind(id)
-    .first();
-  return event as Event | null;
+  const { results }: any = await db.prepare("SELECT * FROM events").all();
+  return results as Event[];
 }

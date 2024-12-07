@@ -6,7 +6,7 @@ export const ClubsSchema = z.object({
   shortName: z.string().optional(),
   description: z.string(),
   type: z.string(),
-  socialMedia: z.union([z.string(), z.object({
+  socialmedia: z.union([z.string(), z.object({
     linkedin: z.string().optional(),
     instagram: z.string().optional(),
     x: z.string().optional(),

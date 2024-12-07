@@ -7,7 +7,7 @@ export async function updateClub(
   club: Omit<Club, "id">,
 ): Promise<Club | null> {
   await initializeClubsTable(db);
-  const { name, shortName = "", description, type, socialMedia, image, banner="", url="", recruiting, recruitmentUrl="" } = club;
+  const { name, shortName = "", description, type, socialmedia, image, banner="", url="", recruiting, recruitmentUrl="" } = club;
   const { meta } = await db
     .prepare(
       "UPDATE clubs SET name = ?, shortname = ?, description = ?, type = ?, socialmedia = ?, image = ?, banner = ?, url = ?, recruiting = ?, recruitmentUrl = ? WHERE id = ?",
@@ -17,7 +17,7 @@ export async function updateClub(
       shortName,
       description,
       type,
-      JSON.stringify(socialMedia),
+      JSON.stringify(socialmedia),
       image,
       banner,
       url,

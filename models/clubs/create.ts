@@ -6,17 +6,17 @@ export async function createClub(
   club: Omit<Club, "id">,
 ): Promise<Club> {
   await initializeClubsTable(db);
-  const { name, shortName = "", description, type, socialMedia, image, banner = "", url = "", recruiting, recruitmentUrl = "" } = club;
+  const { name, shortName = "", description, type, socialmedia, image, banner = "", url = "", recruiting, recruitmentUrl = "" } = club;
   const { meta } = await db
     .prepare(
-      "INSERT INTO clubs (name, shortname, description, type, socialMedia, image, banner, url, recruiting, recruitmentUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO clubs (name, shortname, description, type, socialmedia, image, banner, url, recruiting, recruitmentUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     )
     .bind(
       name,
       shortName,
       description,
       type,
-      JSON.stringify(socialMedia),
+      JSON.stringify(socialmedia),
       image,
       banner,
       url,

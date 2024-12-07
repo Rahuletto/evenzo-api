@@ -129,16 +129,34 @@ const deleteEventRoute = createRoute({
 
 routes.openapi(getEvents, async ({ env, json }) => {
   const events: Event[] = await EventModel.getAllEvents((env as any).DB);
-  return json(events);
+  const parsedEvents = events.map(event => ({
+    ...event,
+    timing: JSON.parse(String(event.timing)),
+    tags: JSON.parse(String(event.tags)),
+    ods: String(event.ods) === "TRUE"
+  }));
+  return json(parsedEvents);
 });
 
 routes.openapi(createEventRoute, async ({ env, json, req }) => {
   const eventInput: Omit<Event, "id"> = await req.json();
+  const obj = {
+    ...eventInput,
+    timing: JSON.stringify(eventInput.timing),
+    tags: JSON.stringify(eventInput.tags),
+    ods: eventInput.ods ? "TRUE" : "FALSE"
+  }
   const newEvent: Event = await EventModel.createEvent(
     (env as any).DB,
-    eventInput,
+    obj as any,
   );
-  return json(newEvent, 201);
+
+  return json({
+    ...newEvent,
+    timing: JSON.parse(String(newEvent.timing)),
+    tags: JSON.parse(String(newEvent.tags)),
+    ods: String(newEvent.ods) === "TRUE"
+  }, 201);
 });
 
 routes.openapi(getEventById, async ({ env, json, req }) => {
@@ -148,7 +166,12 @@ routes.openapi(getEventById, async ({ env, json, req }) => {
     id,
   );
   if (event) {
-    return json(event);
+    return json({
+      ...event,
+      timing: JSON.parse(String(event.timing)),
+      tags: JSON.parse(String(event.tags)),
+      ods: String(event.ods) === "TRUE"
+    });
   }
   return json({ error: "Event not found" }, 404);
 });
@@ -156,10 +179,16 @@ routes.openapi(getEventById, async ({ env, json, req }) => {
 routes.openapi(updateEventRoute, async ({ env, json, req }) => {
   const id: number = parseInt(req.param("id"));
   const eventUpdate: Omit<Event, "id"> = await req.json();
+  const parsedEventUpdate = {
+    ...eventUpdate,
+    ...(eventUpdate.timing && { timing: JSON.stringify(eventUpdate.timing) }),
+    ...(eventUpdate.tags && { tags: JSON.stringify(eventUpdate.tags) }),
+    ...(eventUpdate.ods !== undefined && { ods: eventUpdate.ods ? "TRUE" : "FALSE" })
+  };
   const updatedEvent: Event | null = await EventModel.updateEvent(
     (env as any).DB,
     id,
-    eventUpdate,
+    parsedEventUpdate as any,
   );
   if (updatedEvent) {
     return json(updatedEvent);
@@ -318,16 +347,31 @@ const deleteClubRoute = createRoute({
 
 routes.openapi(getClubs, async ({ env, json }) => {
   const clubs: Club[] = await ClubModel.getAllClubs((env as any).DB);
-  return json(clubs);
+  const parsed = clubs.map(club => ({
+    ...club,
+    socialmedia: JSON.parse(String(club.socialmedia ?? "{}")),
+    recruiting: Number(club.recruiting) == 0 ? false : true
+  }))
+  return json(parsed);
 });
 
 routes.openapi(createClubRoute, async ({ env, json, req }) => {
   const clubInput: Omit<Club, "id"> = await req.json();
+  const club = {
+    ...clubInput,
+    socialmedia: JSON.stringify(clubInput.socialmedia ?? {}),
+    recruiting: clubInput.recruiting ? 1 : 0
+  }
   const newClub: Club = await ClubModel.createClub(
     (env as any).DB,
-    clubInput,
+    club as any,
   );
-  return json(newClub, 201);
+
+  return json({
+    ...newClub,
+    socialmedia: JSON.parse(String(newClub.socialmedia)),
+    recruiting: Number(newClub.recruiting) == 0 ? false : true
+  }, 201);
 });
 
 
@@ -348,7 +392,13 @@ routes.openapi(getClubById, async ({ env, json, req }) => {
     id,
   );
   if (club) {
-    return json(club);
+    const parsed = {
+      ...club,
+      socialmedia: JSON.parse(String(club.socialmedia)),
+      recruiting: Number(club.recruiting) == 0 ? false : true
+    }
+
+    return json(parsed);
   }
   return json({ error: "Club not found" }, 404);
 });
@@ -356,13 +406,24 @@ routes.openapi(getClubById, async ({ env, json, req }) => {
 routes.openapi(updateClubRoute, async ({ env, json, req }) => {
   const id: number = parseInt(req.param("id"));
   const clubUpdate: Omit<Club, "id"> = await req.json();
+
+  const parsed = {
+    ...clubUpdate,
+    ...(clubUpdate.socialmedia && { socialmedia: JSON.stringify(clubUpdate.socialmedia || {}) }),
+    ...(clubUpdate.recruiting !== undefined && { recruiting: clubUpdate.recruiting ? 1 : 0 })
+  }
+
   const updatedClub: Club | null = await ClubModel.updateClub(
     (env as any).DB,
     id,
-    clubUpdate,
+    parsed as any,
   );
   if (updatedClub) {
-    return json(updatedClub);
+    return json({
+      ...updatedClub,
+      socialmedia: JSON.parse(String(updatedClub.socialmedia)),
+      recruiting: Number(updatedClub.recruiting) == 0 ? false : true
+    });
   }
   return json({ error: "Club not found" }, 404);
 });
