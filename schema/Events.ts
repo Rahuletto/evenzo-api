@@ -9,7 +9,9 @@ export const EventSchema = z.object({
     from: z.number(),
     to: z.number(),
   }),
-  hostedBy: z.number(), // CLUB ID
+  tags: z.array(z.string()).optional(),
+  hostedBy: z.string(), // CLUB Name
+  hostId: z.number().optional(), // CLUB ID (If any)
   image: z.string(),
   url: z.string().optional(),
   ods: z.boolean().optional(),

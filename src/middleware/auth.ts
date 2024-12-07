@@ -5,11 +5,6 @@ import { validateToken } from "../../utils/validate";
 export const validateAuthToken = async (c: Context, next: Next) => {
   const host = c.req.header("host")?.split(":")[0];
 
-  const csrf = c.req.header("X-CSRF-Token");
-  if (csrf && csrf.length < 800) {
-    throw new HTTPException(401, { message: "Token refreshed. Logout" });
-  }
-
   if (host !== "localhost") {
     const authHeader = c.req.header("Authorization");
 

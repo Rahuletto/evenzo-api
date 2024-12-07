@@ -331,14 +331,14 @@ routes.openapi(createClubRoute, async ({ env, json, req }) => {
 });
 
 
-// routes.openapi(createClubsRoute, async ({ env, json, req }) => {
-//   const clubInput: Omit<Club[], "id"> = await req.json();
-//   const newClub: Club[] = await ClubModel.createClubs(
-//     (env as any).DB,
-//     clubInput,
-//   );
-//   return json(newClub, 201);
-// });
+routes.openapi(createClubsRoute, async ({ env, json, req }) => {
+  const clubInput: Omit<Club[], "id"> = await req.json();
+  const newClub: Club[] = await ClubModel.createClubs(
+    (env as any).DB,
+    clubInput,
+  );
+  return json(newClub, 201);
+});
 
 
 routes.openapi(getClubById, async ({ env, json, req }) => {

@@ -7,11 +7,13 @@ export async function initializeEventsTable(db: D1Database): Promise<void> {
         description TEXT,
         location TEXT,
         timing TEXT,
-        hostedBy INTEGER NOT NULL,
+        tags TEXT,
+        hostedBy TEXT NOT NULL,
+        hostId INTEGER DEFAULT 0,
         image TEXT,
         url TEXT,
         ods BOOLEAN
       );`,
     )
     .run();
-}
+  }

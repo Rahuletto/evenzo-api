@@ -11,6 +11,9 @@ dist/
 .idea/usage.statistics.xml
 .idea/shelf
 
+clubs.ts
+models/clubs/bulk.ts
+
 # deps
 node_modules/
 .wrangler
