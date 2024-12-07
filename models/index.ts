@@ -1,5 +1,11 @@
-export { createEvent } from "./create";
-export { getAllEvents } from "./get/id";
-export { getEventById } from "./get/index";
-export { updateEvent } from "./update";
-export { deleteEvent } from "./delete";
+export { createEvent } from "./events/create";
+export { getAllEvents } from "./events/get/id";
+export { getEventById } from "./events/get/index";
+export { updateEvent } from "./events/update";
+export { deleteEvent } from "./events/delete";
+
+export { createClub } from "./clubs/create";
+export { getAllClubs } from "./clubs/get/id";
+export { getClubById } from "./clubs/get/index";
+export { updateClub } from "./clubs/update";
+export { deleteClub } from "./clubs/delete";

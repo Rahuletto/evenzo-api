@@ -1,7 +1,8 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { cors } from "hono/cors";
-import { eventRoutes } from "./routes";
+import { routes } from "./routes";
 import { swaggerUI } from "@hono/swagger-ui";
+import { validateAuthToken } from "./middleware/auth";
 
 type Bindings = {
   DB: D1Database;
@@ -22,14 +23,15 @@ app.onError((error, ctx) => {
 });
 
 app.use("*", cors());
+app.use("*", validateAuthToken);
 
-app.route("", eventRoutes);
+app.route("", routes);
 
 app.doc("/swagger.json", {
   openapi: "3.0.0",
   info: {
-    title: "SRMKZILLA Events API",
-    version: "1.0.0",
+    title: "Evenzo API",
+    version: "1.2.0",
   },
 });
 

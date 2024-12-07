@@ -1,5 +1,5 @@
 import { initializeEventsTable } from "../initialize";
-import { Event } from "../../types/Events";
+import { Event } from "../../../schema/Events";
 
 export async function getEventById(
   db: D1Database,

@@ -5,5 +5,14 @@ export const EventSchema = z.object({
   title: z.string(),
   description: z.string(),
   location: z.string(),
-  time: z.string(),
+  timing: z.object({
+    from: z.number(),
+    to: z.number(),
+  }),
+  hostedBy: z.number(), // CLUB ID
+  image: z.string(),
+  url: z.string().optional(),
+  ods: z.boolean().optional(),
 });
+
+export type Event = z.infer<typeof EventSchema>;
