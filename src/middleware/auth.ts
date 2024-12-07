@@ -4,6 +4,7 @@ import { validateToken } from "../../utils/validate";
 
 export const validateAuthToken = async (c: Context, next: Next) => {
   const host = c.req.header("host")?.split(":")[0];
+  if(c.req.path.includes("docs")) return await next();
 
   if (host !== "localhost") {
     const authHeader = c.req.header("Authorization");
