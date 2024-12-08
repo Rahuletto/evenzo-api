@@ -2,9 +2,9 @@ export async function initializeClubsTable(db: D1Database): Promise<void> {
   await db
     .prepare(
       `CREATE TABLE IF NOT EXISTS clubs (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          id TEXT PRIMARY KEY,
           name TEXT NOT NULL,
-          shortname TEXT,
+          shortName TEXT,
           description TEXT,
           type TEXT NOT NULL,
           socialmedia TEXT,
@@ -12,7 +12,8 @@ export async function initializeClubsTable(db: D1Database): Promise<void> {
           banner TEXT,
           url TEXT,
           recruiting BOOLEAN DEFAULT 0,
-          recruitmentUrl TEXT
+          recruitmentUrl TEXT,
+          tags TEXT
         );`,
     )
     .run();

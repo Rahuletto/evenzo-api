@@ -3,20 +3,53 @@ import { initializeEventsTable } from "./initialize";
 
 export async function updateEvent(
   db: D1Database,
-  id: number,
+  id: string,
   event: Omit<Event, "id">
 ): Promise<Event | null> {
   await initializeEventsTable(db);
-  const { title, description, location, timing, hostedBy, hostId = 0, tags = "", image = "", url = "", ods = true } = event;
+
+  // First, get the existing event
+  const existingEvent = await db
+    .prepare("SELECT * FROM events WHERE id = ?")
+    .bind(id)
+    .first<Event>();
+
+  if (!existingEvent) return null;
+
+  const parsedEvent = {
+    ...event,
+    ...(event.timing ? { socialmedia: JSON.stringify(event.timing) } : {}),
+    ...(event.tags ? { tags: JSON.stringify(event.tags) } : {}),
+  }
+
+  const updatedEvent = { ...existingEvent, ...parsedEvent };
+
   const { meta } = await db
     .prepare(
       "UPDATE events SET title = ?, description = ?, location = ?, timing = ?, hostedBy = ?, hostId = ?, tags = ?, image = ?, url = ?, ods = ? WHERE id = ?"
     )
-    .bind(title, description, location, JSON.stringify(timing), hostedBy, hostId, JSON.stringify(tags), image, url, ods, id)
+    .bind(
+      updatedEvent.title,
+      updatedEvent.description,
+      updatedEvent.location,
+      updatedEvent.timing,
+      updatedEvent.hostedBy,
+      updatedEvent.hostId,
+      updatedEvent.tags,
+      updatedEvent.image,
+      updatedEvent.url,
+      updatedEvent.ods,
+      id
+    )
     .run();
 
   if (meta.changes > 0) {
-    return { id, ...event };
+    const json = {
+      ...updatedEvent,
+      timing: JSON.parse(updatedEvent.timing as unknown as string),
+      tags: JSON.parse(updatedEvent.tags as string)
+    }
+    return { ...json };
   }
   return null;
 }

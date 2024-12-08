@@ -1,18 +1,18 @@
 import { z } from "@hono/zod-openapi";
 
 export const EventSchema = z.object({
-  id: z.number(),
-  title: z.string(),
-  description: z.string(),
-  location: z.string(),
+  id: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  location: z.string().optional(),
   timing: z.object({
     from: z.number(),
     to: z.number(),
-  }),
+  }).optional(),
   tags: z.array(z.string()).optional(),
-  hostedBy: z.string(), // CLUB Name
+  hostedBy: z.string().optional(), // CLUB Name
   hostId: z.number().optional(), // CLUB ID (If any)
-  image: z.string(),
+  image: z.string().optional(),
   url: z.string().optional(),
   ods: z.boolean().optional(),
 });

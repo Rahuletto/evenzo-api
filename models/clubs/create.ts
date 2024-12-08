@@ -1,4 +1,5 @@
 import { Club } from "../../schema/Clubs";
+import { generateUUID } from "../../utils/uuid";
 import { initializeClubsTable } from "./initialize";
 
 export async function createClub(
@@ -6,12 +7,14 @@ export async function createClub(
   club: Omit<Club, "id">,
 ): Promise<Club> {
   await initializeClubsTable(db);
-  const { name, shortName = "", description, type, socialmedia, image, banner = "", url = "", recruiting, recruitmentUrl = "" } = club;
+  const { name, shortName = "", description, type, socialmedia, image, banner = "", url = "", recruiting, recruitmentUrl = "", tags = [] } = club;
+  const id = generateUUID();
   const { meta } = await db
     .prepare(
-      "INSERT INTO clubs (name, shortname, description, type, socialmedia, image, banner, url, recruiting, recruitmentUrl) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO clubs (id, name, shortName, description, type, socialmedia, image, banner, url, recruiting, recruitmentUrl, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
     )
     .bind(
+      id,
       name,
       shortName,
       description,
@@ -22,8 +25,9 @@ export async function createClub(
       url,
       recruiting,
       recruitmentUrl,
+      JSON.stringify(tags),
     )
     .run();
 
-  return { id: meta.last_row_id, ...club };
+  return { id, ...club };
 }

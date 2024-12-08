@@ -2,7 +2,7 @@ import { initializeClubsTable } from "./initialize";
 
 export async function deleteClub(
   db: D1Database,
-  id: number
+  id: string
 ): Promise<boolean> {
   await initializeClubsTable(db);
   const { meta } = await db

@@ -1,4 +1,5 @@
 import { Event } from "../../schema/Events";
+import { generateUUID } from "../../utils/uuid";
 import { initializeEventsTable } from "./initialize";
 
 export async function createEvent(
@@ -7,12 +8,13 @@ export async function createEvent(
 ): Promise<Event> {
   await initializeEventsTable(db);
   const { title, description, location, timing, hostedBy, hostId = 0, tags = "", image = "", url = "", ods = true } = event;
+  const id = generateUUID(32);
   const { meta } = await db
     .prepare(
-      "INSERT INTO events (title, description, location, timing, hostedBy, hostId, tags, image, url, ods) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      "INSERT INTO events (id, title, description, location, timing, hostedBy, hostId, tags, image, url, ods) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
     )
-    .bind(title, description, location, JSON.stringify(timing), hostedBy, hostId, JSON.stringify(tags), image, url, ods)
+    .bind(id, title, description, location, JSON.stringify(timing), hostedBy, hostId, JSON.stringify(tags), image, url, ods)
     .run();
 
-  return { id: meta.last_row_id, ...event };
+  return { id, ...event };
 }
