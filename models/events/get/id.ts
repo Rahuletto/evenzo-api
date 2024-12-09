@@ -14,6 +14,7 @@ export async function getEventById(
   if (event) {
     event.timing = JSON.parse(event.timing as string);
     event.tags = JSON.parse(event.tags as string);
+    event.memberCount = JSON.parse(event.memberCount as string);
   }
 
   return event as Event | null;

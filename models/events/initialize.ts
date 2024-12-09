@@ -13,6 +13,8 @@ export async function initializeEventsTable(db: D1Database): Promise<void> {
         image TEXT,
         url TEXT,
         ods BOOLEAN
+        price TEXT DEFAULT 'Free',
+        memberCount TEXT
       );`,
     )
     .run();

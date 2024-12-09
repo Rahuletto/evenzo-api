@@ -7,6 +7,7 @@ export async function getAllEvents(db: D1Database): Promise<Event[]> {
   return results.map((ev: Event) => {
     ev.tags = JSON.parse((ev.tags ?? "[]") as string);
     ev.timing = JSON.parse(ev.timing as unknown as string);
+    ev.memberCount = JSON.parse(ev.memberCount as unknown as string);
     return ev;
   }) as Event[];
 }

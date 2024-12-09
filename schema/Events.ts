@@ -15,6 +15,11 @@ export const EventSchema = z.object({
   image: z.string().optional(),
   url: z.string().optional(),
   ods: z.boolean().optional(),
+  price: z.string().optional(),
+  memberCount: z.object({
+    from: z.number(),
+    to: z.number(),
+  }).optional() || z.object({ count: z.number() }).optional(),
 });
 
 export type Event = z.infer<typeof EventSchema>;

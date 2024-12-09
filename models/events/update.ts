@@ -20,13 +20,14 @@ export async function updateEvent(
     ...event,
     ...(event.timing ? { socialmedia: JSON.stringify(event.timing) } : {}),
     ...(event.tags ? { tags: JSON.stringify(event.tags) } : {}),
+    ...(event.memberCount ? { memberCount: JSON.stringify(event.memberCount) } : {})
   }
 
   const updatedEvent = { ...existingEvent, ...parsedEvent };
 
   const { meta } = await db
     .prepare(
-      "UPDATE events SET title = ?, description = ?, location = ?, timing = ?, hostedBy = ?, hostId = ?, tags = ?, image = ?, url = ?, ods = ? WHERE id = ?"
+      "UPDATE events SET title = ?, description = ?, location = ?, timing = ?, hostedBy = ?, hostId = ?, tags = ?, image = ?, url = ?, ods = ?, price = ?, memberCount = ? WHERE id = ?"
     )
     .bind(
       updatedEvent.title,
@@ -39,6 +40,8 @@ export async function updateEvent(
       updatedEvent.image,
       updatedEvent.url,
       updatedEvent.ods,
+      updatedEvent.price,
+      updatedEvent.memberCount,
       id
     )
     .run();
@@ -47,7 +50,8 @@ export async function updateEvent(
     const json = {
       ...updatedEvent,
       timing: JSON.parse(updatedEvent.timing as unknown as string),
-      tags: JSON.parse(updatedEvent.tags as string)
+      tags: JSON.parse(updatedEvent.tags as string),
+      memberCount: JSON.parse(updatedEvent.memberCount as string)
     }
     return { ...json };
   }
