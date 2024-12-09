@@ -5,6 +5,7 @@ export const EventSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   location: z.string().optional(),
+  type: z.string().optional(),
   timing: z.object({
     from: z.number(),
     to: z.number(),

@@ -27,10 +27,11 @@ export async function updateEvent(
 
   const { meta } = await db
     .prepare(
-      "UPDATE events SET title = ?, description = ?, location = ?, timing = ?, hostedBy = ?, hostId = ?, tags = ?, image = ?, url = ?, ods = ?, price = ?, memberCount = ? WHERE id = ?"
+      "UPDATE events SET title = ?, type = ?, description = ?, location = ?, timing = ?, hostedBy = ?, hostId = ?, tags = ?, image = ?, url = ?, ods = ?, price = ?, memberCount = ? WHERE id = ?"
     )
     .bind(
       updatedEvent.title,
+      updatedEvent.type,
       updatedEvent.description,
       updatedEvent.location,
       updatedEvent.timing,

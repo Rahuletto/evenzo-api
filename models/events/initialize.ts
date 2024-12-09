@@ -5,6 +5,7 @@ export async function initializeEventsTable(db: D1Database): Promise<void> {
         id TEXT PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT,
+        type TEXT,
         location TEXT,
         timing TEXT,
         tags TEXT,
